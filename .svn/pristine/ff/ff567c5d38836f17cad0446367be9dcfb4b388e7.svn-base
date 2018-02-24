@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ehangtian.core.mapper.center.AccountBanlanceMapper" >
+  <resultMap id="BaseResultMap" type="com.ehangtian.core.model.AccountBalance" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ACCOUNT_BALANCE_ID" property="accountBalanceId" jdbcType="BIGINT" />
+    <result column="RECORD_DATE" property="recordDate" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <!--<result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="EXPECT_TIME" property="expectTime" jdbcType="TIMESTAMP" />-->
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ACCOUNT_BALANCE_ID, RECORD_DATE, ACCOUNT
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap"  >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM account_balance WHERE account_balance_id=#{accountBalanceId}
+  </select>
+
+  <insert id="addBfjAccountBalance">
+    INSERT INTO tmp_account_balance (
+    ACCOUNT_BALANCE_ID,
+    RECORD_DATE,
+    BUSINESS_TYPE,
+    ACCOUNT_NATURE,
+    ACCOUNT,
+    VALID_PRICE
+    ) VALUES (
+    #{accountBalanceId,jdbcType=NUMERIC},
+    #{recordDate,jdbcType=VARCHAR},
+    #{businessType,jdbcType=VARCHAR},
+    #{accountNature,jdbcType=VARCHAR},
+    #{account,jdbcType=VARCHAR},
+    #{validPrice,jdbcType=NUMERIC}
+    )
+  </insert>
+
+
+
+</mapper>

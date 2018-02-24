@@ -1,0 +1,7 @@
+package com.ehangtian.core.mapper;
+
+import com.ehangtian.core.model.TtInstOrder;
+import com.ehangtian.platform.base.MyMapper;
+
+public interface TtInstOrderMapper extends MyMapper<TtInstOrder> {
+}

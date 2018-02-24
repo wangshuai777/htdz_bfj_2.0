@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ehangtian.core.mapper.slave.TransUsedMapper" >
+  <resultMap id="BaseResultMap" type="com.ehangtian.core.model.TransUsed" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="TRANS_USED_ID" property="transUsedId" jdbcType="BIGINT" />
+    <result column="RECORD_DATE" property="recordDate" jdbcType="VARCHAR" />
+    <result column="SUBJECT_CODE" property="subjectCode" jdbcType="VARCHAR" />
+    <result column="SUBJECT_NAME" property="subjectName" jdbcType="VARCHAR" />
+    <!--<result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="CURRENCY" property="currency" jdbcType="CHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="EXPECT_TIME" property="expectTime" jdbcType="TIMESTAMP" />-->
+  </resultMap>
+
+  <resultMap id="yfkAccountBalanceMap" type="com.ehangtian.core.model.AccountBalance" >
+
+    <result column="RECORD_DATE" property="recordDate" jdbcType="VARCHAR" />
+    <result column="SUBJECT_CODE" property="subjectCode" jdbcType="VARCHAR" />
+    <result column="SUBJECT_NAME" property="subjectName" jdbcType="VARCHAR" />
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    TRANS_USED_ID,SUBJECT_CODE,SUBJECT_NAME,RECORD_DATE
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap"  >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM trans_used WHERE trans_used_id=#{transUsedId}
+  </select>
+
+  <select id="getBfjSubjectCodeMap" resultType="java.util.HashMap"  >
+    SELECT other_sub_code,bfj_sub_code FROM real_subject WHERE sub_type ='A'
+  </select>
+
+  <select id="getBfjSubjectNameMap" resultType="java.util.HashMap"  >
+    SELECT subject_code,subject_name FROM fin_subject
+  </select>
+
+  <select id="getYfkAccountBalance" resultType="com.ehangtian.core.model.AccountBalance"  >
+     select a.card_no as account,decode(a.card_type,'1','A01','2','A02') as accountNature,b.real_name as customerName,
+     decode(a.card_type,'1',(nvl(a.web_price, 0)-nvl(a.cost, 0))/100,'2',a.par_value) as validPrice, <!--以前nvl(a.web_price, 0)+nvl(a.cost, 0)+nvl(a.e_wallet_price, 0))-->
+     nvl(a.cost, 0)/100 as lockedPrce from res_card a left join cs_customer b on ((a.cust_id = b.cust_id and a.cert_id is null) or a.cert_id = b.cust_id),
+     sys_org s where a.store_org_id=s.org_id and s.net_flag='1' and a.belong_type='1' and a.status in ('1','2','8','21')
+  </select>
+
+  <select id="getYfkTransUsedByDate" resultType="com.ehangtian.core.model.BfjTransUsed"  >
+    select a.sale_no as workOrderCode,'81' as subjectCode,'1' as transFlag, '1' as currencyType, a.sale_price/100 as amount,a.sale_price/100 as bankMoney,a.voucher_no as bankReference,'3' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account,'1' as cashFlag, '' as repairFlag
+    from cs_sale a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id AND a.card_type='2' and a.sale_no like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECE_WAY ='01' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate}  union all
+    select a.sale_no as workOrderCode,'81' as subjectCode,'1' as transFlag, '1' as currencyType, a.sale_price/100 as amount,a.payer_money/100 as bankMoney,a.voucher_no as bankReference,'1' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account ,'0' as cashFlag, decode(a.payee_date,to_char(t.end_time, 'yyyy-mm-dd'),'0','1') as repairFlag
+    from cs_sale a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id AND a.card_type='2' and a.sale_no like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECE_WAY ='02' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate} union all
+    <!--现金充值两部分-->
+    select a.RECH_NO as workOrderCode,'11' as subjectCode,'1' as transFlag, '1' as currencyType, a.RECH_PRICE/100 as amount,a.RECH_PRICE/100 as bankMoney,a.voucher_no as bankReference,'3' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account,'1' as cashFlag , '' as repairFlag
+    from as_rech_cash a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id  and a.RECH_NO like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECh_WAY ='01' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate}  union all
+    select a.RECH_NO as workOrderCode,'11' as subjectCode,'1' as transFlag, '1' as currencyType, a.RECH_PRICE/100 as amount,a.payer_money/100 as bankMoney,a.voucher_no as bankReference,'1' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account,'0' as cashFlag , decode(a.payee_date,to_char(t.end_time, 'yyyy-mm-dd'),'0','1') as repairFlag
+    from as_rech_cash a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id  and a.RECH_NO like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECh_WAY ='02' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate} union all
+    <!--单位充值两部分-->
+    select a.RECH_NO as workOrderCode,'12' as subjectCode,'1' as transFlag, '1' as currencyType, a.RECH_PRICE/100 as amount,a.RECH_PRICE/100 as bankMoney,a.voucher_no as bankReference,'3' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account ,'1' as cashFlag , '' as repairFlag
+    from AS_RECH_COMPANY_STAFF a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id  and a.RECH_NO like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECh_WAY ='01' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate} union all
+    select a.RECH_NO as workOrderCode,'12' as subjectCode,'1' as transFlag, '1' as currencyType, a.RECH_PRICE/100 as amount,a.payer_money/100 as bankMoney,a.voucher_no as bankReference,'1' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account ,'0' as cashFlag , decode(a.payee_date,to_char(t.end_time, 'yyyy-mm-dd'),'0','1') as repairFlag
+    from AS_RECH_COMPANY_STAFF a,wf_flow_entity t where t.flow_entity_id=a.flow_entity_id  and a.RECH_NO like 'HZ%'  and t.finish_flag='1' and t.return_back_flag='0' and a.RECh_WAY ='02' and  to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate} union all
+    <!--消费表数据-->
+    select '' as workOrderCode,decode(net_org_id,863,'80',6,'82',subjectCode)as subjectCode,<!--863-80-电子缴费消费，6-82-电子缴费充值-->
+    decode(net_org_id,863,'0',transFlag) as transFlag,currencyType,amount,amount as bankMoney,'' as bankReference,
+    decode(net_org_id,863,'2',bfjUpLowFlag) as bfjUpLowFlag,khUpLowFlag,account,'' as cashFlag,'' as repairFlag from ( select t.net_org_id, t.cons_type as subjectCode,
+    decode(t.cons_type,'00','2','01','2','03','1','05','1','10','2','11','1','50','2','51','2','52','2','53','2','54','2','55','2','56','2','57','2','13','1','15','1')  as transFlag,
+    '1' as currencyType,abs(t.cons_money/100) as amount,
+    decode(t.cons_type,'01','3','03','3','05','3','10','3','11','1','50','3','51','3','52','3','53','3','54','3','55','3','56','3','57','3','13','3','15','3','9') as bfjUpLowFlag,
+    decode(t.cons_type,'01','2','03','1','05','1','10','2','11','1','50','2','51','2','52','2','53','2','54','2','55','2','56','2','57','2','13','1','15','1','9') as khUpLowFlag,
+    t.card_no as account from ba_consume t where t.cons_date= #{transDate}  and t.belong_type= '1' and t.DEAL_FLAG= '0' and t.cons_type in ('01','10','50','51','52','53','54','55','56','57','03','13','15','05')) union all
+    <!--电子缴费充值-->
+    select A.SALE_NO as workOrderCode, '82' as subjectCode,'1' as transFlag,'1' as currencyType,B.PRICE*A.MOBILE_DISCOUNT/100 amount,B.PRICE*A.MOBILE_DISCOUNT/100 as bankMoney,'' as bankReference, '1' as bfjUpLowFlag,'1' as khUpLowFlag,'' as account,'0' as cashFlag,decode(a.pay_date,to_char(t.end_time, 'yyyy-mm-dd'),'0','1')  as repairFlag
+    from CS_MOBILE_CARD_SALE  a ,wf_flow_entity t ,CS_MOBILE_CARD_SALE_DETAIl  b
+    where t.flow_entity_id=a.flow_entity_id and t.finish_flag='1' and t.return_back_flag='0' and A.MOBILE_CARD_SALE_ID = B.MOBILE_CARD_SALE_ID and to_char(t.END_TIME,'yyyy-mm-dd') = #{transDate} union all
+    <!--航天结算数据(代缴费？)-->
+    select a.BALANCE_NO as workOrderCode,'90' as subjectCode,'0' as transFlag, '1' as currencyType, a.SALE_PRICE/100 as amount,a.HTDZ_PAY_PRICE/100 as bankMoney,a.PAYMENT_CERT_NO as bankReference,'2' as bfjUpLowFlag,'3' as khUpLowFlag,'' as account,'' as cashFlag ,'' as repairFlag
+    from ba_balance a, wf_flow_entity b where a.flow_entity_id = b.flow_entity_id and a.BALANCE_TYPE in ('01','04','05')  and b.finish_flag='1' and b.return_back_flag = '0' and a.BANK_BALA_DATE = #{transDate} union all
+    <!--现金交割-取现金金额及银行转入金额-a.pay_date为交至银行的时间-->
+    select A.CASH_FINANCE_NO as workOrderCode,'101' as subjectCode,'2' as transFlag, '1' as currencyType, A.SHOULD_PAY/100 as amount,A.REALITY_PAY/100 as bankMoney,'' as bankReference,'1' as bfjUpLowFlag,'3' as khUpLowFlag,'' as account,'' as cashFlag ,'' as repairFlag
+    from AS_CASH_FINANCE a,wf_flow_entity b  where a.flow_entity_id = b.flow_entity_id and b.finish_flag='1' and b.return_back_flag = '0'  and a.pay_date= #{transDate} union all
+    <!--退卡交割取银行实际转出金额-a.pay_date为交至银行的时间-->
+    select A.REFUND_CARD_FINANCE_NO as workOrderCode,'102' as subjectCode,'2' as transFlag, '1' as currencyType, A.REFUND_PAY/100 as amount, a.REFUND_PAY/100 as bankMoney,'' as bankReference,'3' as bfjUpLowFlag,'2' as khUpLowFlag,'' as account,'' as cashFlag ,'' as repairFlag
+    from AS_REFUND_CARD_FINANCE a,wf_flow_entity b  where a.flow_entity_id = b.flow_entity_id and b.finish_flag='1' and b.return_back_flag = '0' and a.pay_date= #{transDate} union all
+    <!-- 退卡业务 -->
+    select A.REFUND_NO as workOrderCode,'83' as subjectCode,'2' as transFlag, '1' as currencyType, B.WEB_PRICE/100 as amount, B.WEB_PRICE/100  as bankMoney,'' as bankReference,'3' as bfjUpLowFlag,'2' as khUpLowFlag,A.CARD_NO as account,'' as cashFlag ,'' as repairFlag
+    from AS_CARD_REFUND a,res_card b where A.CARD_NO = B.CARD_NO and B.BELONG_TYPE='1' and B.STATUS='5' and B.WEB_PRICE !=0 and to_char(a.oper_time,'yyyy-mm-dd') = #{transDate} union all
+    <!-- 卡赎回业务 -->
+    select A.RECH_NO as workOrderCode,'83' as subjectCode,'2' as transFlag, '1' as currencyType, A.CARD_BALANCE/100 as amount, a.CARD_BALANCE/100 as bankMoney,'' as bankReference,'1' as bfjUpLowFlag,'2' as khUpLowFlag,'' as account,'' as cashFlag ,'' as repairFlag
+    from AS_CARD_RETURN a,wf_flow_entity b  where a.flow_entity_id = b.flow_entity_id and b.finish_flag='1' and b.return_back_flag = '0' and to_char(b.END_TIME,'yyyy-mm-dd') = #{transDate}
+
+
+
+
+
+
+
+
+
+  </select>
+
+</mapper>

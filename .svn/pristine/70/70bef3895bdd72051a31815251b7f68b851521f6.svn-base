@@ -1,0 +1,11 @@
+package com.ehangtian.platform.base;
+
+import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.MySqlMapper;
+
+/**
+ * Created by chenwei on 2017/12/29.
+ */
+public interface MyMapper<T> extends Mapper<T>, MySqlMapper<T> {
+
+}

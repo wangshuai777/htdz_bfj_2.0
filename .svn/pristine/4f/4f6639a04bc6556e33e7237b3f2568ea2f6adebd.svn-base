@@ -1,0 +1,48 @@
+package com.ehangtian.core.controller;
+
+import com.ehangtian.core.model.AccountBalance;
+import com.ehangtian.core.model.InstOrder;
+import com.ehangtian.core.model.TransUsed;
+import com.ehangtian.core.service.HelloService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+/**
+ * Created by chenwei on 2017/12/29.
+ */
+@RestController
+@RequestMapping("/test")
+public class Hello {
+
+    @Autowired
+    private HelloService helloService;
+
+
+    @RequestMapping("/h1")
+    public String hello(){
+        return "hello world!";
+    }
+
+   @RequestMapping("/h2")
+    public AccountBalance hello2(){
+        return helloService.findById(563221L);
+    }
+
+    @RequestMapping("/h3")
+    public List<InstOrder> hello3(){
+        return helloService.findAll();
+    }
+
+    @RequestMapping("/h4")
+    public List<AccountBalance> hello4(){
+        return helloService.findAlls();
+    }
+
+    @RequestMapping("/h5")
+    public TransUsed hello5(){
+        return helloService.findByTransId(23528L);
+    }
+}

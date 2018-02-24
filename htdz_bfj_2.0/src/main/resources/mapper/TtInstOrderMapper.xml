@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ehangtian.core.mapper.TtInstOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ehangtian.core.model.TtInstOrder" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="INST_ORDER_ID" property="instOrderId" jdbcType="BIGINT" />
+    <result column="INST_CODE" property="instCode" jdbcType="VARCHAR" />
+    <result column="INST_ORDER_NO" property="instOrderNo" jdbcType="VARCHAR" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="CURRENCY" property="currency" jdbcType="CHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="COMMUNICATE_TYPE" property="communicateType" jdbcType="CHAR" />
+    <result column="COMMUNICATE_STATUS" property="communicateStatus" jdbcType="CHAR" />
+    <result column="ARCHIVE_BATCH_ID" property="archiveBatchId" jdbcType="BIGINT" />
+    <result column="GMT_SUBMIT" property="gmtSubmit" jdbcType="TIMESTAMP" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="GMT_MODIFIED" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+    <result column="PAYMENT_CODE" property="paymentCode" jdbcType="VARCHAR" />
+    <result column="PAY_MODE" property="payMode" jdbcType="VARCHAR" />
+    <result column="FUND_CHANNEL_CODE" property="fundChannelCode" jdbcType="VARCHAR" />
+    <result column="FUND_CHANNEL_API" property="fundChannelApi" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_TEMPLATE_ID" property="archiveTemplateId" jdbcType="INTEGER" />
+    <result column="SUBMIT_PRIORITY" property="submitPriority" jdbcType="INTEGER" />
+    <result column="GMT_BOOKING_SUBMIT" property="gmtBookingSubmit" jdbcType="TIMESTAMP" />
+    <result column="RETRY_TIMES" property="retryTimes" jdbcType="SMALLINT" />
+    <result column="GMT_NEXT_RETRY" property="gmtNextRetry" jdbcType="TIMESTAMP" />
+    <result column="FLAG" property="flag" jdbcType="CHAR" />
+    <result column="RISK_STATUS" property="riskStatus" jdbcType="CHAR" />
+    <result column="ROUTE_VERSION" property="routeVersion" jdbcType="BIGINT" />
+    <result column="REVERSAL_STATUS" property="reversalStatus" jdbcType="CHAR" />
+    <result column="CMF_SEQ_NO" property="cmfSeqNo" jdbcType="VARCHAR" />
+    <result column="IS_SPLIT" property="isSplit" jdbcType="CHAR" />
+    <result column="EXTENSION" property="extension" jdbcType="VARCHAR" />
+    <result column="EXPECT_TIME" property="expectTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

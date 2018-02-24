@@ -1,0 +1,32 @@
+package com.ehangtian;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+
+/**
+ * 航天电子备付金系统2.0
+ * create by chenwei 2-17-12-29
+ */
+//@EnableDiscoveryClient
+@SpringBootApplication
+@EnableScheduling
+@EnableSwagger2
+@MapperScan(basePackages={"com.ehangtian.core.mapper"})
+public class HtdzBfjApplication implements CommandLineRunner {
+
+	private Logger logger = LoggerFactory.getLogger(HtdzBfjApplication.class);
+	public static void main(String[] args) {
+		SpringApplication.run(HtdzBfjApplication.class, args);
+	}
+
+	public void run(String... strings) throws Exception {
+		logger.info("HtdzBfj服务启动完成!");
+	}
+}

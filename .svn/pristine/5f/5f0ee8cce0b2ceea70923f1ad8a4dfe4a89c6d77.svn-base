@@ -1,0 +1,664 @@
+package com.ehangtian.core.model;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import javax.persistence.*;
+
+@Table(name = "tt_inst_order")
+public class TtInstOrder {
+    /**
+     * 机构订单ID
+     */
+    @Id
+    @Column(name = "INST_ORDER_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long instOrderId;
+
+    /**
+     * 机构编码
+     */
+    @Column(name = "INST_CODE")
+    private String instCode;
+
+    /**
+     * 机构订单号
+     */
+    @Column(name = "INST_ORDER_NO")
+    private String instOrderNo;
+
+    /**
+     * 订单类型：I（入款），B（退款），O（出款）
+     */
+    @Column(name = "ORDER_TYPE")
+    private String orderType;
+
+    /**
+     * 币种
+     */
+    @Column(name = "CURRENCY")
+    private String currency;
+
+    /**
+     * 金额
+     */
+    @Column(name = "AMOUNT")
+    private BigDecimal amount;
+
+    /**
+     * 状态：I（处理中），S（成功），F（失败）
+     */
+    @Column(name = "STATUS")
+    private String status;
+
+    /**
+     * 通讯类型，S（单笔通信），B（批量通信）
+     */
+    @Column(name = "COMMUNICATE_TYPE")
+    private String communicateType;
+
+    /**
+     * 通讯类型，类型为单笔时：A（等待指令发送），S（指令已经发送），R（数据已经返回），F（指令发送失败）。
+            批量时：A（等待数据归档），G（归档已经生成），S（归档数据已经提交），R（归档数据已经返回），F（归档数据提交失败）
+     */
+    @Column(name = "COMMUNICATE_STATUS")
+    private String communicateStatus;
+
+    /**
+     * 归档批次ID
+     */
+    @Column(name = "ARCHIVE_BATCH_ID")
+    private Long archiveBatchId;
+
+    /**
+     * 提交时间
+     */
+    @Column(name = "GMT_SUBMIT")
+    private Date gmtSubmit;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "GMT_CREATE")
+    private Date gmtCreate;
+
+    /**
+     * 最后修改时间
+     */
+    @Column(name = "GMT_MODIFIED")
+    private Date gmtModified;
+
+    /**
+     * 备注
+     */
+    @Column(name = "MEMO")
+    private String memo;
+
+    @Column(name = "PRODUCT_CODE")
+    private String productCode;
+
+    @Column(name = "PAYMENT_CODE")
+    private String paymentCode;
+
+    @Column(name = "PAY_MODE")
+    private String payMode;
+
+    @Column(name = "FUND_CHANNEL_CODE")
+    private String fundChannelCode;
+
+    @Column(name = "FUND_CHANNEL_API")
+    private String fundChannelApi;
+
+    @Column(name = "ARCHIVE_TEMPLATE_ID")
+    private Integer archiveTemplateId;
+
+    @Column(name = "SUBMIT_PRIORITY")
+    private Integer submitPriority;
+
+    @Column(name = "GMT_BOOKING_SUBMIT")
+    private Date gmtBookingSubmit;
+
+    @Column(name = "RETRY_TIMES")
+    private Short retryTimes;
+
+    @Column(name = "GMT_NEXT_RETRY")
+    private Date gmtNextRetry;
+
+    @Column(name = "FLAG")
+    private String flag;
+
+    /**
+     * I,等待审核结果;F,发送请求失败;P,审核通过;R,审核拒绝
+     */
+    @Column(name = "RISK_STATUS")
+    private String riskStatus;
+
+    @Column(name = "ROUTE_VERSION")
+    private Long routeVersion;
+
+    @Column(name = "REVERSAL_STATUS")
+    private String reversalStatus;
+
+    @Column(name = "CMF_SEQ_NO")
+    private String cmfSeqNo;
+
+    @Column(name = "IS_SPLIT")
+    private String isSplit;
+
+    @Column(name = "EXTENSION")
+    private String extension;
+
+    @Column(name = "EXPECT_TIME")
+    private Date expectTime;
+
+    /**
+     * 获取机构订单ID
+     *
+     * @return INST_ORDER_ID - 机构订单ID
+     */
+    public Long getInstOrderId() {
+        return instOrderId;
+    }
+
+    /**
+     * 设置机构订单ID
+     *
+     * @param instOrderId 机构订单ID
+     */
+    public void setInstOrderId(Long instOrderId) {
+        this.instOrderId = instOrderId;
+    }
+
+    /**
+     * 获取机构编码
+     *
+     * @return INST_CODE - 机构编码
+     */
+    public String getInstCode() {
+        return instCode;
+    }
+
+    /**
+     * 设置机构编码
+     *
+     * @param instCode 机构编码
+     */
+    public void setInstCode(String instCode) {
+        this.instCode = instCode;
+    }
+
+    /**
+     * 获取机构订单号
+     *
+     * @return INST_ORDER_NO - 机构订单号
+     */
+    public String getInstOrderNo() {
+        return instOrderNo;
+    }
+
+    /**
+     * 设置机构订单号
+     *
+     * @param instOrderNo 机构订单号
+     */
+    public void setInstOrderNo(String instOrderNo) {
+        this.instOrderNo = instOrderNo;
+    }
+
+    /**
+     * 获取订单类型：I（入款），B（退款），O（出款）
+     *
+     * @return ORDER_TYPE - 订单类型：I（入款），B（退款），O（出款）
+     */
+    public String getOrderType() {
+        return orderType;
+    }
+
+    /**
+     * 设置订单类型：I（入款），B（退款），O（出款）
+     *
+     * @param orderType 订单类型：I（入款），B（退款），O（出款）
+     */
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    /**
+     * 获取币种
+     *
+     * @return CURRENCY - 币种
+     */
+    public String getCurrency() {
+        return currency;
+    }
+
+    /**
+     * 设置币种
+     *
+     * @param currency 币种
+     */
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    /**
+     * 获取金额
+     *
+     * @return AMOUNT - 金额
+     */
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    /**
+     * 设置金额
+     *
+     * @param amount 金额
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * 获取状态：I（处理中），S（成功），F（失败）
+     *
+     * @return STATUS - 状态：I（处理中），S（成功），F（失败）
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置状态：I（处理中），S（成功），F（失败）
+     *
+     * @param status 状态：I（处理中），S（成功），F（失败）
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * 获取通讯类型，S（单笔通信），B（批量通信）
+     *
+     * @return COMMUNICATE_TYPE - 通讯类型，S（单笔通信），B（批量通信）
+     */
+    public String getCommunicateType() {
+        return communicateType;
+    }
+
+    /**
+     * 设置通讯类型，S（单笔通信），B（批量通信）
+     *
+     * @param communicateType 通讯类型，S（单笔通信），B（批量通信）
+     */
+    public void setCommunicateType(String communicateType) {
+        this.communicateType = communicateType;
+    }
+
+    /**
+     * 获取通讯类型，类型为单笔时：A（等待指令发送），S（指令已经发送），R（数据已经返回），F（指令发送失败）。
+            批量时：A（等待数据归档），G（归档已经生成），S（归档数据已经提交），R（归档数据已经返回），F（归档数据提交失败）
+     *
+     * @return COMMUNICATE_STATUS - 通讯类型，类型为单笔时：A（等待指令发送），S（指令已经发送），R（数据已经返回），F（指令发送失败）。
+            批量时：A（等待数据归档），G（归档已经生成），S（归档数据已经提交），R（归档数据已经返回），F（归档数据提交失败）
+     */
+    public String getCommunicateStatus() {
+        return communicateStatus;
+    }
+
+    /**
+     * 设置通讯类型，类型为单笔时：A（等待指令发送），S（指令已经发送），R（数据已经返回），F（指令发送失败）。
+            批量时：A（等待数据归档），G（归档已经生成），S（归档数据已经提交），R（归档数据已经返回），F（归档数据提交失败）
+     *
+     * @param communicateStatus 通讯类型，类型为单笔时：A（等待指令发送），S（指令已经发送），R（数据已经返回），F（指令发送失败）。
+            批量时：A（等待数据归档），G（归档已经生成），S（归档数据已经提交），R（归档数据已经返回），F（归档数据提交失败）
+     */
+    public void setCommunicateStatus(String communicateStatus) {
+        this.communicateStatus = communicateStatus;
+    }
+
+    /**
+     * 获取归档批次ID
+     *
+     * @return ARCHIVE_BATCH_ID - 归档批次ID
+     */
+    public Long getArchiveBatchId() {
+        return archiveBatchId;
+    }
+
+    /**
+     * 设置归档批次ID
+     *
+     * @param archiveBatchId 归档批次ID
+     */
+    public void setArchiveBatchId(Long archiveBatchId) {
+        this.archiveBatchId = archiveBatchId;
+    }
+
+    /**
+     * 获取提交时间
+     *
+     * @return GMT_SUBMIT - 提交时间
+     */
+    public Date getGmtSubmit() {
+        return gmtSubmit;
+    }
+
+    /**
+     * 设置提交时间
+     *
+     * @param gmtSubmit 提交时间
+     */
+    public void setGmtSubmit(Date gmtSubmit) {
+        this.gmtSubmit = gmtSubmit;
+    }
+
+    /**
+     * 获取创建时间
+     *
+     * @return GMT_CREATE - 创建时间
+     */
+    public Date getGmtCreate() {
+        return gmtCreate;
+    }
+
+    /**
+     * 设置创建时间
+     *
+     * @param gmtCreate 创建时间
+     */
+    public void setGmtCreate(Date gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    /**
+     * 获取最后修改时间
+     *
+     * @return GMT_MODIFIED - 最后修改时间
+     */
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    /**
+     * 设置最后修改时间
+     *
+     * @param gmtModified 最后修改时间
+     */
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
+    /**
+     * 获取备注
+     *
+     * @return MEMO - 备注
+     */
+    public String getMemo() {
+        return memo;
+    }
+
+    /**
+     * 设置备注
+     *
+     * @param memo 备注
+     */
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    /**
+     * @return PRODUCT_CODE
+     */
+    public String getProductCode() {
+        return productCode;
+    }
+
+    /**
+     * @param productCode
+     */
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    /**
+     * @return PAYMENT_CODE
+     */
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    /**
+     * @param paymentCode
+     */
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
+    }
+
+    /**
+     * @return PAY_MODE
+     */
+    public String getPayMode() {
+        return payMode;
+    }
+
+    /**
+     * @param payMode
+     */
+    public void setPayMode(String payMode) {
+        this.payMode = payMode;
+    }
+
+    /**
+     * @return FUND_CHANNEL_CODE
+     */
+    public String getFundChannelCode() {
+        return fundChannelCode;
+    }
+
+    /**
+     * @param fundChannelCode
+     */
+    public void setFundChannelCode(String fundChannelCode) {
+        this.fundChannelCode = fundChannelCode;
+    }
+
+    /**
+     * @return FUND_CHANNEL_API
+     */
+    public String getFundChannelApi() {
+        return fundChannelApi;
+    }
+
+    /**
+     * @param fundChannelApi
+     */
+    public void setFundChannelApi(String fundChannelApi) {
+        this.fundChannelApi = fundChannelApi;
+    }
+
+    /**
+     * @return ARCHIVE_TEMPLATE_ID
+     */
+    public Integer getArchiveTemplateId() {
+        return archiveTemplateId;
+    }
+
+    /**
+     * @param archiveTemplateId
+     */
+    public void setArchiveTemplateId(Integer archiveTemplateId) {
+        this.archiveTemplateId = archiveTemplateId;
+    }
+
+    /**
+     * @return SUBMIT_PRIORITY
+     */
+    public Integer getSubmitPriority() {
+        return submitPriority;
+    }
+
+    /**
+     * @param submitPriority
+     */
+    public void setSubmitPriority(Integer submitPriority) {
+        this.submitPriority = submitPriority;
+    }
+
+    /**
+     * @return GMT_BOOKING_SUBMIT
+     */
+    public Date getGmtBookingSubmit() {
+        return gmtBookingSubmit;
+    }
+
+    /**
+     * @param gmtBookingSubmit
+     */
+    public void setGmtBookingSubmit(Date gmtBookingSubmit) {
+        this.gmtBookingSubmit = gmtBookingSubmit;
+    }
+
+    /**
+     * @return RETRY_TIMES
+     */
+    public Short getRetryTimes() {
+        return retryTimes;
+    }
+
+    /**
+     * @param retryTimes
+     */
+    public void setRetryTimes(Short retryTimes) {
+        this.retryTimes = retryTimes;
+    }
+
+    /**
+     * @return GMT_NEXT_RETRY
+     */
+    public Date getGmtNextRetry() {
+        return gmtNextRetry;
+    }
+
+    /**
+     * @param gmtNextRetry
+     */
+    public void setGmtNextRetry(Date gmtNextRetry) {
+        this.gmtNextRetry = gmtNextRetry;
+    }
+
+    /**
+     * @return FLAG
+     */
+    public String getFlag() {
+        return flag;
+    }
+
+    /**
+     * @param flag
+     */
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    /**
+     * 获取I,等待审核结果;F,发送请求失败;P,审核通过;R,审核拒绝
+     *
+     * @return RISK_STATUS - I,等待审核结果;F,发送请求失败;P,审核通过;R,审核拒绝
+     */
+    public String getRiskStatus() {
+        return riskStatus;
+    }
+
+    /**
+     * 设置I,等待审核结果;F,发送请求失败;P,审核通过;R,审核拒绝
+     *
+     * @param riskStatus I,等待审核结果;F,发送请求失败;P,审核通过;R,审核拒绝
+     */
+    public void setRiskStatus(String riskStatus) {
+        this.riskStatus = riskStatus;
+    }
+
+    /**
+     * @return ROUTE_VERSION
+     */
+    public Long getRouteVersion() {
+        return routeVersion;
+    }
+
+    /**
+     * @param routeVersion
+     */
+    public void setRouteVersion(Long routeVersion) {
+        this.routeVersion = routeVersion;
+    }
+
+    /**
+     * @return REVERSAL_STATUS
+     */
+    public String getReversalStatus() {
+        return reversalStatus;
+    }
+
+    /**
+     * @param reversalStatus
+     */
+    public void setReversalStatus(String reversalStatus) {
+        this.reversalStatus = reversalStatus;
+    }
+
+    /**
+     * @return CMF_SEQ_NO
+     */
+    public String getCmfSeqNo() {
+        return cmfSeqNo;
+    }
+
+    /**
+     * @param cmfSeqNo
+     */
+    public void setCmfSeqNo(String cmfSeqNo) {
+        this.cmfSeqNo = cmfSeqNo;
+    }
+
+    /**
+     * @return IS_SPLIT
+     */
+    public String getIsSplit() {
+        return isSplit;
+    }
+
+    /**
+     * @param isSplit
+     */
+    public void setIsSplit(String isSplit) {
+        this.isSplit = isSplit;
+    }
+
+    /**
+     * @return EXTENSION
+     */
+    public String getExtension() {
+        return extension;
+    }
+
+    /**
+     * @param extension
+     */
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    /**
+     * @return EXPECT_TIME
+     */
+    public Date getExpectTime() {
+        return expectTime;
+    }
+
+    /**
+     * @param expectTime
+     */
+    public void setExpectTime(Date expectTime) {
+        this.expectTime = expectTime;
+    }
+}

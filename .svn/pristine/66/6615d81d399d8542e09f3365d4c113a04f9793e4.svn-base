@@ -1,0 +1,7 @@
+server.port=2018
+eureka.instance.hostname=localhost
+#不需要注册自己
+eureka.client.register-with-eureka=false
+#检索服务设置为false,注册中心的责任为注册服务
+eureka.client.fetch-registry=false
+eureka.client.service-url.defautZone=http://${eureka.instance.hostname}:${server.port}/eureka/

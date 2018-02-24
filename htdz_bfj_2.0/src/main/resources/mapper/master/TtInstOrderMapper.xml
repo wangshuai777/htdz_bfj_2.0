@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ehangtian.core.mapper.master.InstOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ehangtian.core.model.InstOrder" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="INST_ORDER_ID" property="instOrderId" jdbcType="BIGINT" />
+    <result column="INST_CODE" property="instCode" jdbcType="VARCHAR" />
+    <result column="FUND_CHANNEL_CODE" property="fundChannelCode" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="GMT_SUBMIT" property="gmtSubmit" jdbcType="TIMESTAMP" />
+    <!--<result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="ARCHIVE_BATCH_ID" property="archiveBatchId" jdbcType="BIGINT" />
+    <result column="GMT_SUBMIT" property="gmtSubmit" jdbcType="TIMESTAMP" />
+    <result column="GMT_CREATE" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="CMF_SEQ_NO" property="cmfSeqNo" jdbcType="VARCHAR" />
+    <result column="EXTENSION" property="extension" jdbcType="VARCHAR" />
+    <result column="EXPECT_TIME" property="expectTime" jdbcType="TIMESTAMP" />-->
+  </resultMap>
+
+  <resultMap id="instOrderMap" type="com.ehangtian.core.model.InstOrder" >
+    <id column="INST_ORDER_ID" property="instOrderId" jdbcType="BIGINT" />
+  <result column="INST_CODE" property="instCode" jdbcType="VARCHAR" />
+  <result column="FUND_CHANNEL_CODE" property="fundChannelCode" jdbcType="VARCHAR" />
+  <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+  <result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+  <result column="GMT_SUBMIT" property="gmtSubmit" jdbcType="TIMESTAMP" />
+
+  </resultMap>
+
+  <resultMap id="accountBalanceMap" type="com.ehangtian.core.model.AccountBalance" >
+   <!-- <id column="INST_ORDER_ID" property="instOrderId" jdbcType="BIGINT" />
+    <result column="INST_CODE" property="instCode" jdbcType="VARCHAR" />
+    <result column="FUND_CHANNEL_CODE" property="fundChannelCode" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="DECIMAL" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="CHAR" />
+    <result column="GMT_SUBMIT" property="gmtSubmit" jdbcType="TIMESTAMP" />-->
+
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    INST_ORDER_ID, INST_CODE, INST_ORDER_NO
+  </sql>
+
+  <select id="findAll" resultMap="BaseResultMap"  >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM tt_inst_order
+  </select>
+   <!--根据交易日期查询数据-->
+  <select id="findInstOrderBySubmitDate" resultMap="instOrderMap"  >
+    SELECT
+    t.INST_ORDER_ID,
+    t.INST_CODE,
+	t.FUND_CHANNEL_CODE,
+	t.AMOUNT,
+	t.ORDER_TYPE,
+	t.GMT_SUBMIT
+    FROM cmf.tt_inst_order t
+    WHERE 	t.STATUS='S'
+    and t.GMT_SUBMIT &gt;= #{beginDate}
+    and t.GMT_SUBMIT &lt; #{endDate}
+    UNION
+    SELECT
+    v.id as INST_ORDER_ID,
+    d.ACCOUNT_NAME,
+    v.id as '凭证ID',
+    v.AMOUNT,
+    'I' as '出入金类型',
+    v.GMT_CREATE
+    from counter.tb_pac_voucher v
+    LEFT JOIN counter.tb_pac_voucher_crdr r ON v.ORGI_ID=r.VOUCHER_ID
+    LEFT JOIN dpm.t_dpm_inner_account d ON r.ACCOUNT_NO = d.ACCOUNT_NO
+    where r.DIRECTION = 'D'
+    and v.STATUS = '3'
+    and v.VOUCHER_TYPE='2'
+    and v.GMT_CREATE &gt;= #{beginDate}
+    and v.GMT_CREATE &lt; #{endDate}
+
+  </select>
+
+  <select id="findAccountBalanceByDate" resultType="java.lang.Double">
+    select FORMAT(ifnull(a.credit_balance,0),2) CRLASTDAYBALANCE from (select tbt.title_code,
+    SUM(case ttd.account_date when #{beginDate} then ttd.debit_balance else 0 end) as debit_balance,
+    SUM(case ttd.account_date when #{beginDate} then ttd.credit_balance else 0 end) as credit_balance
+    from (select s.* from dpm.t_act_account_titile s where s.title_level = '1' ) tbt LEFT JOIN dpm.tb_title_daily ttd
+    on ttd.account_date &lt;= #{beginDate} and ttd.account_date &lt;= #{beginDate} AND ttd.title_code = tbt.title_code
+    group by tbt.title_code, tbt.title_name, tbt.title_level, tbt.type ) a left join dpm.tb_title_daily ttd2
+    on ttd2.title_code= a.title_code and ttd2.account_date =date_format(STR_TO_DATE(#{beginDate},'%Y%m%d')- INTERVAL 1 DAY, '%Y%m%d')
+    where a.TITLE_CODE in (2001,2003)
+    order by a.title_code
+  </select>
+
+
+</mapper>

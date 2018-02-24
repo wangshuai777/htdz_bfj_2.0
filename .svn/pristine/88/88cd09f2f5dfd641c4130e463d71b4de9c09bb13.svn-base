@@ -1,0 +1,44 @@
+server.port=9090
+debug=true
+logging.level.root=debug
+#logging.level.tk.mybatis.springboot.mapper=trace
+#支付系统数据库配置
+master.datasource.url=jdbc:mysql://10.16.199.72:3306/cmf
+master.datasource.username=root
+master.datasource.password=mysql
+master.datasource.driverClassName=com.mysql.jdbc.Driver
+
+
+#预付卡系统数据库配置
+slave.datasource.url=jdbc:oracle:thin:@10.251.1.10:1521:orcl
+slave.datasource.username=usryfk
+slave.datasource.password=1
+slave.datasource.driverClassName=oracle.jdbc.driver.OracleDriver
+
+#备付金系统数据库配置
+center.datasource.url=jdbc:oracle:thin:@10.251.1.10:1521:orcl
+center.datasource.username=bfj
+center.datasource.password=1
+center.datasource.driverClassName=oracle.jdbc.driver.OracleDriver
+
+#mybatis.type-aliases-package=com.ehangtian.core.model
+#mybatis.mapper-locations=classpath:mapper/*.xml
+#mapper.mappers= com.ehangtian.platform.base.MyMapper
+#mapper.not-empty=false
+#mapper.identity=MYSQL
+
+#mybatis.config-locations=classpath:mapper/mybatis-config.xml
+#mybatis.mapper-locations=classpath:mapper/**/*.xml
+#mybatis.type-aliases-package=om.ehangtian.core.model
+
+logging.level.org.springframework=WARN
+logging.level.org.spring.springboot.dao=DEBUG
+
+#spring cloud client
+#spring.application.name=htdz-bfj
+#eureka.client.service-url.defaultZone = http://localhost:2018/eureka/
+
+#关于服务续约设置,默认参数也为30.90
+#eureka.instance.lease-renewal-interval-in-seconds=30
+#eureka.instance.lease-expiration-duration-in-seconds=90
+

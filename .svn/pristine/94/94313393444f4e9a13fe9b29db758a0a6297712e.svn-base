@@ -1,0 +1,10 @@
+package com.ehangtian.core.mapper.slave;
+
+import com.ehangtian.core.model.TransUsed;
+
+/**
+ * Created by wangshuai on 2018/1/3.
+ */
+public interface TransUsedMapper {
+    TransUsed findById(Long transUsedId);
+}

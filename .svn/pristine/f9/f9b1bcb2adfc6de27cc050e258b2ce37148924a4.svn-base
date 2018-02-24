@@ -1,0 +1,37 @@
+package com.ehangtian.core.model;
+
+import java.io.Serializable;
+
+/**
+ * Created by wangshuai on 2018/1/2.
+ */
+public class InstOrder implements Serializable {
+
+    private Long instOrderId;
+    private String instCode;
+    private String instOrderNo;
+
+    public Long getInstOrderId() {
+        return instOrderId;
+    }
+
+    public void setInstOrderId(Long instOrderId) {
+        this.instOrderId = instOrderId;
+    }
+
+    public String getInstCode() {
+        return instCode;
+    }
+
+    public void setInstCode(String instCode) {
+        this.instCode = instCode;
+    }
+
+    public String getInstOrderNo() {
+        return instOrderNo;
+    }
+
+    public void setInstOrderNo(String instOrderNo) {
+        this.instOrderNo = instOrderNo;
+    }
+}

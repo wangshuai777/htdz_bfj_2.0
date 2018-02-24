@@ -1,0 +1,20 @@
+package com.ehangtian.core.service;
+
+import com.ehangtian.core.mapper.TtInstOrderMapper;
+import com.ehangtian.core.model.TtInstOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by chenwei on 2017/12/29.
+ */
+@Service
+public class HelloService {
+
+    @Autowired
+    private TtInstOrderMapper ttInstOrderMapper;
+
+    public TtInstOrder getHello(){
+        return ttInstOrderMapper.selectByPrimaryKey(Long.valueOf(1));
+    }
+}

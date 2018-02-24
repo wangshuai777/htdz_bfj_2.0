@@ -1,0 +1,3 @@
+spring.application.name=fegin-consumer
+server.port=20182
+eureka.client.service-url.defaultZone = http://localhost:2018/eureka

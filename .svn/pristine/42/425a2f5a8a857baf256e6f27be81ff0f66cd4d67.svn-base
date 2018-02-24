@@ -1,0 +1,28 @@
+server.port=9090
+debug=true
+logging.level.root=debug
+#logging.level.tk.mybatis.springboot.mapper=trace
+spring.datasource.url=jdbc:mysql://10.16.199.72:3306/cmf
+spring.datasource.username=root
+spring.datasource.password=mysql
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.druid.initial-size=1
+spring.datasource.druid.min-idle=1
+spring.datasource.druid.max-active=20
+spring.datasource.druid.test-on-borrow=true
+spring.datasource.druid.stat-view-servlet.allow=true
+
+mybatis.type-aliases-package=com.ehangtian.core.model
+mybatis.mapper-locations=classpath:mapper/*.xml
+mapper.mappers= com.ehangtian.platform.base.MyMapper
+mapper.not-empty=false
+mapper.identity=MYSQL
+
+#spring cloud client
+spring.application.name=htdz-bfj
+eureka.client.service-url.defaultZone = http://localhost:2018/eureka/
+
+#关于服务续约设置,默认参数也为30.90
+#eureka.instance.lease-renewal-interval-in-seconds=30
+#eureka.instance.lease-expiration-duration-in-seconds=90
+

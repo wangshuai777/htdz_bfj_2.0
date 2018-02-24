@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ehangtian.core.mapper.center.BfjTransUsedMapper" >
+  <resultMap id="BaseResultMap" type="com.ehangtian.core.model.BfjTransUsed" >
+    <id column="ACCOUNT_BALANCE_ID" property="accountBalanceId" jdbcType="BIGINT" />
+    <result column="RECORD_DATE" property="recordDate" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="addBfjTransUsedData">
+    INSERT INTO tmp_trans_used (
+    TRANS_USED_ID,
+    SUBJECT_CODE,
+    SUBJECT_NAME,
+    RECORD_DATE,
+    WORK_ORDER_CODE,
+    BUSINESS_TYPE,
+    TRANS_FLAG,
+    CURRENCY_TYPE,
+    AMOUNT,
+    BANK_REFERENCE,
+    BFJ_UP_LOW_FLAG,
+    KH_UP_LOW_FLAG,
+    ACCOUNT,
+    CASH_FLAG,
+    REPAIR_FLAG,
+    BANK_MONEY
+    ) VALUES (
+    #{transUsedId,jdbcType=NUMERIC},
+    #{subjectCode,jdbcType=VARCHAR},
+    #{subjectName,jdbcType=VARCHAR},
+    #{recordDate,jdbcType=VARCHAR},
+    #{workOrderCode,jdbcType=VARCHAR},
+    #{businessType,jdbcType=VARCHAR},
+    #{transFlag,jdbcType=VARCHAR},
+    #{currencyType,jdbcType=VARCHAR},
+    #{amount,jdbcType=NUMERIC},
+    #{bankReference,jdbcType=VARCHAR},
+    #{bfjUpLowFlag,jdbcType=VARCHAR},
+    #{khUpLowFlag,jdbcType=VARCHAR},
+    #{account,jdbcType=VARCHAR},
+    #{cashFlag,jdbcType=VARCHAR},
+    #{repairFlag,jdbcType=VARCHAR},
+    #{bankMoney,jdbcType=NUMERIC}
+    )
+  </insert>
+
+
+
+
+</mapper>
