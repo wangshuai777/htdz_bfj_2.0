@@ -27,6 +27,6 @@ public class HtdzBfjApplication implements CommandLineRunner {
 	}
 
 	public void run(String... strings) throws Exception {
-		logger.info("HtdzBfj服务启动完成!");
+		logger.info("HtdzBfj服务启动完成!!");
 	}
 }
